@@ -1,5 +1,5 @@
 import { supabase } from "./supabase";
-import type { Todo, CreateTodoDto, UpdateTodoDto } from "../types";
+import type { Todo, CreateTodoDo, UpdateTodoDo } from "../types";
 
 // Получить все todos
 export const fetchTodos = async (): Promise<Todo[]> => {
@@ -13,12 +13,12 @@ export const fetchTodos = async (): Promise<Todo[]> => {
 };
 
 // Создать новый todo
-export const createTodo = async (todo: CreateTodoDto): Promise<Todo> => {
+export const createTodo = async (todo: CreateTodoDo): Promise<Todo> => {
   const { data, error } = await supabase
     .from("todos")
-    .insert([todo])
+    .insert([todo]) // ← Оборачиваем в массив
     .select()
-    .single();
+    .single(); // ← Возвращаем один элемент, не массив
 
   if (error) throw error;
   return data;
@@ -27,13 +27,13 @@ export const createTodo = async (todo: CreateTodoDto): Promise<Todo> => {
 // Обновить todo
 export const updateTodo = async (
   id: string,
-  updates: UpdateTodoDto
+  updates: UpdateTodoDo
 ): Promise<Todo> => {
   const { data, error } = await supabase
     .from("todos")
     .update(updates)
-    .eq("id", id)
-    .select()
+    .eq("id", id) // ← Ищем по id!
+    .select("*")
     .single();
 
   if (error) throw error;
@@ -42,7 +42,10 @@ export const updateTodo = async (
 
 // Удалить todo
 export const deleteTodo = async (id: string): Promise<void> => {
-  const { error } = await supabase.from("todos").delete().eq("id", id);
+  const { error } = await supabase
+    .from("todos")
+    .delete() // ← DELETE, а не update!
+    .eq("id", id);
 
   if (error) throw error;
 };
@@ -52,5 +55,5 @@ export const toggleTodo = async (
   id: string,
   completed: boolean
 ): Promise<Todo> => {
-  return updateTodo(id, { completed });
+  return updateTodo(id, { completed }); // ← Переиспользуем updateTodo!
 };

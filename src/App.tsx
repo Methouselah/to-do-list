@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { fetchTodos } from "./api/todos";
 import type { Todo } from "./types";
 
@@ -13,12 +13,11 @@ function App() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div className="p-8">Loading...</div>;
+  if (loading) return <h2 className="bg-black min-h-screen">Loading</h2>;
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <h1 className="text-3xl font-bold text-gray-800 mb-4">Todo List</h1>
-      <p className="text-gray-600">Connected! Todos count: {todos.length}</p>
+    <div className="min-h-screen bg-black text-gray-100">
+      <h1 className="text-3xl font-bold ">Todo List</h1>
     </div>
   );
 }

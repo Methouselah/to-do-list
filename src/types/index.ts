@@ -5,15 +5,14 @@ export interface Todo {
   completed: boolean;
   created_at: string;
 }
-
 // Тип для создания нового Todo (без id и created_at)
-export type CreateTodoDto = {
+export type CreateTodoDo = {
   title: string;
   completed?: boolean;
 };
 
 // Тип для обновления Todo
-export type UpdateTodoDto = {
+export type UpdateTodoDo = {
   title?: string;
   completed?: boolean;
 };
